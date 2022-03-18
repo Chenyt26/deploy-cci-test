@@ -2,7 +2,7 @@ name: Deploy CCI Actions Demo
 on:
   push:
     branches:
-      - master1
+      - master
 jobs:
   deploy_cci:
     runs-on: ubuntu-latest
@@ -21,6 +21,7 @@ jobs:
         run: |
           npm run build
           npm run package
+          ls -al dist/
       - name: deploy to cci
         uses: ./
         id: cci
