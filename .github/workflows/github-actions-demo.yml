@@ -20,8 +20,8 @@ jobs:
       - name: Rebuild the dist/ directory
         run: |
           npm install --verbose
-          npm run build
-          npm run package
+          #npm run build
+          #npm run package
           ls -al ./
           ls -al dist/
       - name: deploy to cci
