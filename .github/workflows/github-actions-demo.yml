@@ -23,7 +23,7 @@ jobs:
           #npm run build
           #npm run package
           ls -al ./
-          ls -al dist/
+          #ls -al dist/
       - name: deploy to cci
         uses: ./
         id: cci
