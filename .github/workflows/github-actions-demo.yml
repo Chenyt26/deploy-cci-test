@@ -2,7 +2,7 @@ name: Deploy CCI Actions Demo
 on:
   push:
     branches:
-      - master1
+      - master
 jobs:
   deploy_cci:
     runs-on: ubuntu-latest
