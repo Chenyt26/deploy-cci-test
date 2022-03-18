@@ -1,5 +1,8 @@
-name: GitHub Actions Demo
-on: [push]
+name: Deploy CCI Actions Demo
+on:
+  push:
+    branches:
+      - cci
 jobs:
   deploy_cci:
     runs-on: ubuntu-latest
