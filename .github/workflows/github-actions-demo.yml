@@ -2,15 +2,25 @@ name: Deploy CCI Actions Demo
 on:
   push:
     branches:
-      - master
+      - master1
 jobs:
   deploy_cci:
     runs-on: ubuntu-latest
     steps:
-      # To use this repository's private action,
-      # you must check out the repository
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+
+      - name: Set Node.js 16.x
+        uses: actions/setup-node@v2.5.1
+        with:
+          node-version: 16.x
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Rebuild the dist/ directory
+        run: |
+          npm run build
+          npm run package
       - name: deploy to cci
         uses: ./
         id: cci
