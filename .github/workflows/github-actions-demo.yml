@@ -2,7 +2,7 @@ name: Deploy CCI Actions Demo
 on:
   push:
     branches:
-      - master
+      - master1
 jobs:
   deploy_cci:
     runs-on: ubuntu-latest
@@ -14,13 +14,15 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: Install dependencies
-        run: npm ci
+#       - name: Install dependencies
+#         run: npm ci
 
       - name: Rebuild the dist/ directory
         run: |
+          npm install --verbose
           npm run build
           npm run package
+          ls -al ./
           ls -al dist/
       - name: deploy to cci
         uses: ./
