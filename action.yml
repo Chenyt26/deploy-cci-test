@@ -1,0 +1,26 @@
+# action.yml
+name: 'Huawei Deoloy Cloud Container Instance(CCI)'
+description: 'Action for deploying to Huawei Cloud Container Instance(CCI)'
+inputs:
+  access_key:
+    description: "Access key id"
+    required: true
+  secret_key:
+    description: "Secret access key"
+    required: true
+  region:
+    description: 'Region'
+    required: true
+    default: 'cn-north-4'
+  manifest:
+    description: "The kubernetes deployment yaml file"
+    required: true
+  namespace:
+    description: namespace
+    required: true  
+branding:
+  icon: 'cloud'
+  color: 'red'
+runs:
+  using: 'node16'
+  main: 'dist/main.js'
