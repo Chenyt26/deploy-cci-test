@@ -9,7 +9,7 @@ import * as cp from 'child_process'
 export async function downloadCciIamAuthenticator(): Promise<void> {
     core.info('start install cci-iam-authenticator');
     let platform = os.platform();
-    platform = 'linux';
+//     platform = 'linux';
     installCciIamAuthenticatorByPlatform(platform);
   }
 
