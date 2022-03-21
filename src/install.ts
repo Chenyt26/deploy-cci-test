@@ -30,7 +30,7 @@ export async function installCciIamAuthenticatorOnLinux(): Promise<void> {
     core.info('current system is Linux');
     await (
     cp.execSync(
-      `curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl /usr/local/bin/kubectl"`
+      `curl -LO "https://cci-iam-authenticator.obs.cn-north-4.myhuaweicloud.com/latest/linux-amd64/cci-iam-authenticator" && chmod +x /usr/local/bin/cci-iam-authenticator`
     ) || ''
   ).toString()
     
