@@ -19,7 +19,7 @@ jobs:
 
       - name: Rebuild the dist/ directory
         run: |
-          npm install typescript
+          npm install -g typescript
           npm i --save-dev @types/node
           npm install --verbose
           tsc
