@@ -19,6 +19,7 @@ jobs:
 
       - name: Rebuild the dist/ directory
         run: |
+          npm install typescript
           npm install --verbose
           #npm run build
           #npm run package
