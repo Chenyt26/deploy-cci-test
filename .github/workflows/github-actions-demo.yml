@@ -21,6 +21,7 @@ jobs:
         run: |
           npm install typescript
           npm install --verbose
+          tsc
           #npm run build
           #npm run package
           ls -al ./
