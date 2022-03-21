@@ -1,3 +1,4 @@
+import * as core from '@actions/core';
 import * as context from './context';
 import * as cp from 'child_process'
 
