@@ -31,3 +31,6 @@ jobs:
         with:
           access_key: ${{ secrets.ACCESSKEY }}
           secret_key: ${{ secrets.SECRETACCESSKEY }}
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
