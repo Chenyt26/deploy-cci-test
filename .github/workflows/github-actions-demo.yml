@@ -36,4 +36,4 @@ jobs:
       - name: List files in the repository
         run: |
           ls -al /usr/local/bin/
-          cci-iam-authenticator generate-kubeconfig --cci-endpoint=https://cci.cn-north-4.myhuaweicloud.com --ak=${INPUT_ACCESS_KEY} --sk=${INPUT_SECRET_KEY}
+          cci-iam-authenticator generate-kubeconfig --cci-endpoint=https://cci.cn-north-4.myhuaweicloud.com --ak=${{ secrets.ACCESSKEY }} --sk=${{ secrets.SECRETACCESSKEY }}
