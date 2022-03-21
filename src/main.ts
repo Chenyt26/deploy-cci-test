@@ -10,10 +10,10 @@ export async function run() {
     core.info('input message:' + input.namespace);
 
     // 安装cci-iam-authenticator
-    const cachedPath = await install.downloadCciIamAuthenticator();
+    const cciIamAuthPath = await install.downloadCciIamAuthenticator();
     
     //配置iam的aksk
-    const cachedPath = await auth.configCciAuth();
+    const cciIamAuth = await auth.configCciAuth();
 }
 
 run();
