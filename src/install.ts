@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import * as io from '@actions/io'
 import * as os from 'os'
-import * as toolCache from '@actions/tool-cache';
+import * as exec from '@actions/exec';
 
 /*
  *
@@ -27,17 +27,8 @@ export async function installCciIamAuthenticatorByPlatform(platform: string): Pr
   }
 
 export async function installCciIamAuthenticatorOnLinux(): Promise<void> {
-    let downloadPath = '';
-    try {
-        downloadPath = await toolCache.downloadTool('https://cci-iam-authenticator.obs.cn-north-4.myhuaweicloud.com/latest/linux-amd64/cci-iam-authenticator');
-        core.info('start install cci-iam-authenticator ' + downloadPath);
-    } catch (exception) {
-        if (exception instanceof toolCache.HTTPError && exception.httpStatusCode === 404) {
-            throw new Error("cci-iam-authenticator arch not found.");
-        } else {
-            throw new Error('DownloadKubectlFailed');
-        }
-    }
+    core.info('current system is Linux');
+    await exec.exec('curl', ['-LO', '"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"']);
 }
 
 export async function installCciIamAuthenticatorOnMacos(): Promise<void> {
