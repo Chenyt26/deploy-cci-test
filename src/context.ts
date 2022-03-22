@@ -5,7 +5,7 @@ export interface Inputs {
   secretKey: string;
   region: string;
   manifest: string;
-  namespace: string;
+  iamges: string;
 }
 
 export function getInputs(): Inputs {
@@ -14,6 +14,6 @@ export function getInputs(): Inputs {
     secretKey: core.getInput('secret_key'),
     region: core.getInput('region'),
     manifest: core.getInput('manifest'),
-    namespace: core.getInput('namespace')
+    iamges: core.getInput('iamges')
   };
 }
