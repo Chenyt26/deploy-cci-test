@@ -40,7 +40,7 @@ export async function installCciIamAuthenticatorOnMacos(): Promise<void> {
     core.info('current system is Macos');
     await (
     cp.execSync(
-      `curl -LO "https://cci-iam-authenticator.obs.cn-north-4.myhuaweicloud.com/latest/linux-amd64/cci-iam-authenticator"   && chmod +x ./cci-iam-authenticator && mv ./cci-iam-authenticator /usr/local/bin`
+      `curl -LO "https://cci-iam-authenticator-all-arch.obs.cn-south-1.myhuaweicloud.com/darwin-amd64/cci-iam-authenticator"   && chmod +x ./cci-iam-authenticator && mv ./cci-iam-authenticator /usr/local/bin`
     ) || ''
   ).toString()
 }
