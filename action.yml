@@ -15,8 +15,8 @@ inputs:
   manifest:
     description: "The kubernetes deployment yaml file"
     required: true
-  namespace:
-    description: namespace
+  images:
+    description: images url(e.g., swr.cn-north-4.myhuaweicloud.com/namespace/demo:v1.1,swr.cn-north-4.myhuaweicloud.com/namespace/demo:v1.2)
     required: true  
 branding:
   icon: 'cloud'
