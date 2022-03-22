@@ -2,7 +2,7 @@ name: Deploy CCI Actions Demo
 on:
   push:
     branches:
-      - master
+      - master1
 jobs:
   deploy_cci:
     runs-on: macos-latest
