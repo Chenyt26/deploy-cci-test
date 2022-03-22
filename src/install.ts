@@ -9,7 +9,6 @@ import * as cp from 'child_process'
 export async function downloadCciIamAuthenticator(): Promise<void> {
     core.info('start install cci-iam-authenticator');
     let platform = os.platform();
-//     platform = 'linux';
     installCciIamAuthenticatorByPlatform(platform);
   }
 
@@ -18,29 +17,29 @@ export async function downloadCciIamAuthenticator(): Promise<void> {
  * @param platform
  */
 export async function installCciIamAuthenticatorByPlatform(platform: string): Promise<void> {
-    if (platform === 'darwin') {
-      await installCciIamAuthenticatorOnMacos()
-    }
-    if (platform === 'linux') {
-      await installCciIamAuthenticatorOnLinux()
-    }
-  }
-
-export async function installCciIamAuthenticatorOnLinux(): Promise<void> {
-    core.info('current system is Linux');
-    await (
-    cp.execSync(
-      `curl -LO "https://cci-iam-authenticator.obs.cn-north-4.myhuaweicloud.com/latest/linux-amd64/cci-iam-authenticator"   && chmod +x ./cci-iam-authenticator && mv ./cci-iam-authenticator /usr/local/bin`
-    ) || ''
-  ).toString()
+    let downloadURL = getAuthDownloadURL(platform);
+    
+    await installCciIamAuthenticator(downloadURL);
     
 }
 
-export async function installCciIamAuthenticatorOnMacos(): Promise<void> {
-    core.info('current system is Macos');
+export function getAuthDownloadURL(platform: string): string {
+    switch (platform) {
+        case 'Linux':
+            return 'https://cci-iam-authenticator.obs.cn-north-4.myhuaweicloud.com/latest/linux-amd64/cci-iam-authenticator';
+        case 'Darwin':
+            return 'https://cci-iam-authenticator-all-arch.obs.cn-south-1.myhuaweicloud.com/darwin-amd64/cci-iam-authenticator';
+        default:
+            return 'https://cci-iam-authenticator.obs.cn-north-4.myhuaweicloud.com/latest/linux-amd64/cci-iam-authenticator';
+    }
+}
+
+
+export async function installCciIamAuthenticator(downloadURL: string): Promise<void> {
+    core.info('current system is Linux');
     await (
     cp.execSync(
-      `curl -LO "https://cci-iam-authenticator-all-arch.obs.cn-south-1.myhuaweicloud.com/darwin-amd64/cci-iam-authenticator"   && chmod +x ./cci-iam-authenticator && mv ./cci-iam-authenticator /usr/local/bin`
+      `curl -LO "${downloadURL}"   && chmod +x ./cci-iam-authenticator && mv ./cci-iam-authenticator /usr/local/bin`
     ) || ''
-  ).toString()
+  ).toString()  
 }
