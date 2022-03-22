@@ -14,6 +14,6 @@ export function getInputs(): Inputs {
     secretKey: core.getInput('secret_key'),
     region: core.getInput('region'),
     manifest: core.getInput('manifest'),
-    iamges: core.getInput('iamges')
+    images: core.getInput('images')
   };
 }
