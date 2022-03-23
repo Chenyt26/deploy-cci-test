@@ -27,6 +27,15 @@ jobs:
           #npm run package
           ls -al ./
           #ls -al dist/
+      - name: Install kubectl
+        id: install-kubectl
+        run: |
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+          echo "$(<kubectl.sha256) kubectl" | sha256sum --check
+          chmod +x kubectl
+          mv ./kubectl /usr/local/bin
+          kubectl version --client=true
       - name: deploy to cci
         uses: ./
         id: cci
