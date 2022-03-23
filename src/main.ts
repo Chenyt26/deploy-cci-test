@@ -2,7 +2,7 @@ import * as core from '@actions/core';
 import * as context from './context';
 import * as install from './install';
 import * as auth from './auth';
-import * as image from './ImageUpdate';
+import * as image from './image-update';
 
 
 export async function run() {
