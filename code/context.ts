@@ -10,10 +10,10 @@ export interface Inputs {
 
 export function getInputs(): Inputs {
   return {
-    accessKey: core.getInput('access_key'),
-    secretKey: core.getInput('secret_key'),
-    region: core.getInput('region'),
-    manifest: core.getInput('manifest'),
-    images: core.getInput('images')
+    accessKey: core.getInput('access_key', { 'required': true }),
+    secretKey: core.getInput('secret_key', { 'required': true }),
+    region: core.getInput('region', { 'required': true }),
+    manifest: core.getInput('manifest', { 'required': true }),
+    images: core.getInput('images', { 'required': true })
   };
 }
