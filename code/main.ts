@@ -3,7 +3,7 @@ import * as context from './context'
 import * as install from './install'
 import * as auth from './auth'
 import * as image from './image-update'
-import * as deploy from './deploy-cci.ts'
+import * as deploy from './deploy-cci'
 
 
 export async function run() {
