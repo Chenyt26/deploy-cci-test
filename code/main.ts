@@ -20,7 +20,7 @@ export async function run() {
     const imageConfi = await image.updateImage(input);
     
     //部署cci
-    const deployCCI = await deploy.deployCCI();
+    const deployCCI = await deploy.deployCCI(input.manifest);
 }
 
 run();
