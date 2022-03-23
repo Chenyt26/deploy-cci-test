@@ -5,7 +5,7 @@ export interface Inputs {
   secretKey: string;
   region: string;
   manifest: string;
-  iamges: string;
+  images: string;
 }
 
 export function getInputs(): Inputs {
