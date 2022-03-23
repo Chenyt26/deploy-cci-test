@@ -2,7 +2,7 @@ name: Deploy CCI Actions Demo
 on:
   push:
     branches:
-      - master1
+      - master
 jobs:
   deploy_cci:
     runs-on: ubuntu-latest
@@ -34,7 +34,10 @@ jobs:
           access_key: ${{ secrets.ACCESSKEY }}
           secret_key: ${{ secrets.SECRETACCESSKEY }}
           region: cn-north-4
+          manifest: './deployment.yaml'
+          images: 'swr.cn-north-4.myhuaweicloud.com/namespace/demo:v1.2'
       - name: List files in the repository
         run: |
           ls -al /usr/local/bin/
+          cat ./deployment.yaml
           cci-iam-authenticator --help
