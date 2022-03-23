@@ -1,8 +1,9 @@
-import * as core from '@actions/core';
-import * as context from './context';
-import * as install from './install';
-import * as auth from './auth';
-import * as image from './image-update';
+import * as core from '@actions/core'
+import * as context from './context'
+import * as install from './install'
+import * as auth from './auth'
+import * as image from './image-update'
+import * as deploy from './deploy-cci.ts'
 
 
 export async function run() {
@@ -17,6 +18,9 @@ export async function run() {
     
     // 替换镜像地址
     const imageConfi = await image.updateImage(input);
+    
+    //部署cci
+    const deployCCI = await deploy.deployCCI();
 }
 
 run();
