@@ -8,7 +8,6 @@ import * as image from './ImageUpdate';
 export async function run() {
     const input: context.Inputs = context.getInputs();
     core.info('install cci-auth');
-    core.info('input message:' + input.namespace);
 
     // 安装cci-iam-authenticator
     const cciIamAuthPath = await install.downloadCciIamAuthenticator();
