@@ -33,6 +33,7 @@ export async function updateImage(inputs: context.Inputs): Promise<void> {
         var replaceStr = prePlaceholder + i;
         //readFile方法读取文件内容
         var data = fs.readFileSync(manifestPath, 'utf8');
+        core.info(imageArray[i]);
         var result = data.replace(RegExp(replaceStr), "image: \'" +imageArray[i] + "\'");
         //writeFile改写文件内容
         fs.writeFileSync(manifestPath, result, 'utf8');
