@@ -21,10 +21,10 @@ export async function updateImage(inputs: context.Inputs): Promise<void> {
      */
     const prePlaceholder:string = "IMAGE_PLACEHOLDER_";
     for (let i = 0; i < imageArray.length; i++) {
-        let replaceStr = prePlaceholder + i;
+        const replaceStr = prePlaceholder + i;
         //readFile方法读取文件内容
-        let data = fs.readFileSync(manifestPath, 'utf8');
-        var placeholder = data.replace(RegExp("image: .*"), replaceStr);
+        const data = fs.readFileSync(manifestPath, 'utf8');
+        const placeholder = data.replace(RegExp("image: .*"), replaceStr);
         //writeFile改写文件内容
         fs.writeFileSync(manifestPath, placeholder, 'utf8');
     }
@@ -33,11 +33,11 @@ export async function updateImage(inputs: context.Inputs): Promise<void> {
      * 镜像占位符替换成新镜像信息
      */
     for (let i = 0; i < imageArray.length; i++) {
-        let replaceStr = prePlaceholder + i;
+        const replaceStr = prePlaceholder + i;
         //readFile方法读取文件内容
-        let data = fs.readFileSync(manifestPath, 'utf8');
+        const data = fs.readFileSync(manifestPath, 'utf8');
         core.info(imageArray[i]);
-        let result = data.replace(RegExp(replaceStr), "image: '" +imageArray[i] + "'");
+        const result = data.replace(RegExp(replaceStr), "image: '" +imageArray[i] + "'");
         //writeFile改写文件内容
         fs.writeFileSync(manifestPath, result, 'utf8');
     }
