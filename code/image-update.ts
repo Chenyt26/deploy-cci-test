@@ -11,7 +11,10 @@ export async function updateImage(inputs: context.Inputs): Promise<void> {
     // const inputs: context.Inputs = context.getInputs();
     let imageArray:string[] = getImageArray(inputs.images);
     let manifestPath:string = path.resolve(inputs.manifest);
-    core.info('update manifest file:' + manifestPath);
+    
+    if (!fs.existsSync(manifestPath)) {
+      throw new Error(`Manifest file does not exist: ${manifestPath}`);
+    }
     
     /*
      * manifest文件镜像信息替换成占位符
