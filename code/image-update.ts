@@ -13,7 +13,7 @@ export async function updateImage(inputs: context.Inputs): Promise<void> {
     let manifestPath:string = path.resolve(inputs.manifest);
     
     if (!fs.existsSync(manifestPath)) {
-      throw new Error("Manifest file does not exist: " + inputs.manifest);
+      throw new Error("Manifest file does not exist");
     }
     
     /*
