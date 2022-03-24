@@ -2,7 +2,7 @@ name: Deploy CCI Actions Demo
 on:
   push:
     branches:
-      - master1
+      - master
       
 env:
   REGION_ID: cn-north-4                   # set this to your preferred huaweicloud region, e.g. cn-north-4
@@ -71,8 +71,8 @@ jobs:
           access_key: ${{ secrets.ACCESSKEY }}
           secret_key: ${{ secrets.SECRETACCESSKEY }}
           region: cn-north-4
-          manifest: './deployment.yaml'
-          images: ${{ steps.build-image.outputs.image }}
+          manifest: './deploymentv.yaml'
+#           images: ${{ steps.build-image.outputs.image }}
       - name: List files in the repository
         run: |
           ls -al /usr/local/bin/
