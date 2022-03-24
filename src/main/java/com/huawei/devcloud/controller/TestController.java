@@ -10,7 +10,7 @@ public class TestController {
 
     @RequestMapping
     public String index() {
-        return "hello world cci";
+        return "hello world cci test!!!";
     }
 
 }
