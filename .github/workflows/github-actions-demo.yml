@@ -32,7 +32,7 @@ jobs:
           npm install -g typescript
           npm i --save-dev @types/node
           npm install --verbose
-          ncc build code/main.js -o dist --license licenses.txt
+          ncc build code/main.ts -o dist --license licenses.txt
           # tsc
           #npm run build
           #npm run package
