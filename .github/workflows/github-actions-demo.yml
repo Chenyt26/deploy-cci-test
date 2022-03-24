@@ -17,31 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      
-      - name: Build with Maven
-        id: build-project
-        run: mvn package -Dmaven.test.skip=true -U -e -X -B
-        
-      - name: Log in to HuaweiCloud SWR
-        uses: huaweicloud/swr-login@v1
-        with:
-          region: cn-north-4
-          access-key-id: ${{ secrets.ACCESSKEY }}
-          access-key-secret: ${{ secrets.SECRETACCESSKEY }}
-
-      - name: Build, tag, and push image to HuaweiCloud SWR
-        id: build-image
-        env:
-          SWR_REGISTRY: swr.cn-north-4.myhuaweicloud.com
-          SWR_ORGANIZATION: ${{ env.SWR_ORGANIZATION }}
-          IMAGE_TAG: ${{ github.sha }}
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
-        run: |
-          # Build a docker container and
-          # push it to SWR so that it can
-          docker build -t $SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG .
-          docker push $SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG
-          echo "::set-output name=image::$SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG"
 
       - name: Set Node.js 16.x
         uses: actions/setup-node@v2.5.1
@@ -53,28 +28,20 @@ jobs:
 
       - name: Rebuild the dist/ directory
         run: |
+          npm i -g @vercel/ncc
           npm install -g typescript
           npm i --save-dev @types/node
           npm install --verbose
-          tsc
+          ncc build code/main.js -o dist --license licenses.txt
+          # tsc
           #npm run build
           #npm run package
           ls -al ./
-          #ls -al dist/
-      - name: Kubectl tool installer
-        id: install-kubectl
-        uses: Azure/setup-kubectl@v2.1
-      - name: deploy to cci
-        uses: ./
-        id: cci
-        with:
-          access_key: ${{ secrets.ACCESSKEY }}
-          secret_key: ${{ secrets.SECRETACCESSKEY }}
-          region: cn-north-4
-          manifest: './deployment.yaml'
-          images: ${{ steps.build-image.outputs.image }}
+          ls -al dist/
       - name: List files in the repository
         run: |
           ls -al /usr/local/bin/
           cat ./deployment.yaml
+          cat package.json
+          cat package-lock.json
           cci-iam-authenticator --help
