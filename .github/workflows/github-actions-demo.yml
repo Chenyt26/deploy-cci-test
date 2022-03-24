@@ -2,7 +2,7 @@ name: Deploy CCI Actions Demo
 on:
   push:
     branches:
-      - ncc
+      - ncc-test
       
 env:
   REGION_ID: cn-north-4                   # set this to your preferred huaweicloud region, e.g. cn-north-4
@@ -17,41 +17,64 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
-      - name: Set Node.js 16.x
-        uses: actions/setup-node@v2.5.1
+      
+      - name: Build with Maven
+        id: build-project
+        run: mvn package -Dmaven.test.skip=true -U -e -X -B
+        
+      - name: Log in to HuaweiCloud SWR
+        uses: huaweicloud/swr-login@v1
         with:
-          node-version: 16.x
+          region: cn-north-4
+          access-key-id: ${{ secrets.ACCESSKEY }}
+          access-key-secret: ${{ secrets.SECRETACCESSKEY }}
 
-#       - name: Install dependencies
-#         run: npm ci
-
-      - name: Rebuild the dist/ directory
+      - name: Build, tag, and push image to HuaweiCloud SWR
+        id: build-image
+        env:
+          SWR_REGISTRY: swr.cn-north-4.myhuaweicloud.com
+          SWR_ORGANIZATION: ${{ env.SWR_ORGANIZATION }}
+          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
         run: |
-          npm i -g @vercel/ncc
-          npm install -g typescript
-          npm i --save-dev @types/node
-          npm install --verbose
-          ncc build code/main.ts -o dist --license licenses.txt
-          # tsc
-          #npm run build
-          #npm run package
-          ls -al ./
-          ls -al dist/
+          # Build a docker container and
+          # push it to SWR so that it can
+          docker build -t $SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG .
+          docker push $SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG
+          echo "::set-output name=image::$SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG"
+
+#       - name: Set Node.js 16.x
+#         uses: actions/setup-node@v2.5.1
+#         with:
+#           node-version: 16.x
+
+# #       - name: Install dependencies
+# #         run: npm ci
+
+#       - name: Rebuild the dist/ directory
+#         run: |
+#           npm install -g typescript
+#           npm i --save-dev @types/node
+#           npm install --verbose
+#           tsc
+#           #npm run build
+#           #npm run package
+#           ls -al ./
+#           #ls -al dist/
+      - name: Kubectl tool installer
+        id: install-kubectl
+        uses: Azure/setup-kubectl@v2.1
+      - name: deploy to cci
+        uses: ./
+        id: cci
+        with:
+          access_key: ${{ secrets.ACCESSKEY }}
+          secret_key: ${{ secrets.SECRETACCESSKEY }}
+          region: cn-north-4
+          manifest: './deployment.yaml'
+          images: ${{ steps.build-image.outputs.image }}
       - name: List files in the repository
         run: |
           ls -al /usr/local/bin/
           cat ./deployment.yaml
-          cat package.json
-          cat package-lock.json
-      - name: Commit files
-        run: |
-          git add .
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git commit -m "Add changes" -a
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          cci-iam-authenticator --help
