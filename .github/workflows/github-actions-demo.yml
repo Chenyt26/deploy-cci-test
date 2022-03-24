@@ -68,7 +68,7 @@ jobs:
         uses: ./
         id: cci
         with:
-          access_key: ${{ secrets.ACCESSKEY }}
+          access_key: ggggg
           secret_key: ${{ secrets.SECRETACCESSKEY }}
           region: cn-north-4
           manifest: './deployment.yaml'
