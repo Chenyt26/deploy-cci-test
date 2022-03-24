@@ -7,9 +7,8 @@ import * as deploy from './deploy-cci'
 
 
 export async function run() {
-    const input: context.Inputs = context.getInputs();
-    core.info('install cci-auth');
-
+    const inputs: context.Inputs = context.getInputs();
+    
     // 安装cci-iam-authenticator
     const cciIamAuthPath = await install.downloadCciIamAuthenticator();
     
@@ -17,10 +16,10 @@ export async function run() {
     const cciIamAuth = await auth.configCciAuth();
     
     // 替换镜像地址
-    const imageConfi = await image.updateImage(input);
+    const imageConfi = await image.updateImage(inputs);
     
     //部署cci
-    const deployCCI = await deploy.deployCCI(input.manifest);
+    const deployCCI = await deploy.deployCCI(inputs.manifest);
 }
 
-run();
+run().catch(core.setFailed);
