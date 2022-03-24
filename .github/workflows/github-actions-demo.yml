@@ -71,7 +71,7 @@ jobs:
           access_key: ${{ secrets.ACCESSKEY }}
           secret_key: ${{ secrets.SECRETACCESSKEY }}
           region: cn-north-4
-          manifest: './deploymentv.yaml'
+          manifest: './deployment.yaml'
           images: ${{ steps.build-image.outputs.image }}
       - name: List files in the repository
         run: |
