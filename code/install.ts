@@ -3,7 +3,7 @@ import * as os from 'os'
 import * as cp from 'child_process'
 
 
-export async function downloadCciIamAuthenticator(): Promise<void> {
+export function downloadCciIamAuthenticator() {
     core.info('start install cci-iam-authenticator');
     const platform = os.platform();
     core.info('platform: ' + platform);
