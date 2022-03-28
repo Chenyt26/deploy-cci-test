@@ -8,7 +8,6 @@ import * as path from 'path';
  */
 export async function updateImage(inputs: context.Inputs): Promise<void> {
     core.info('update manifest file');
-    // const inputs: context.Inputs = context.getInputs();
     const imageArray:string[] = getImageArray(inputs.images);
     const manifestPath = path.resolve(inputs.manifest);
     
