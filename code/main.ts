@@ -10,7 +10,7 @@ export async function run() {
     const inputs: context.Inputs = context.getInputs();
     
     // 安装cci-iam-authenticator
-    await install.downloadCciIamAuthenticator();
+    install.downloadCciIamAuthenticator();
     
     // 配置iam的aksk
     await auth.configCciAuth();
