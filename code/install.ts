@@ -30,7 +30,7 @@ export function getAuthDownloadURL(platform: string): string {
         case 'Darwin':
             return 'https://cci-iam-authenticator-all-arch.obs.cn-south-1.myhuaweicloud.com/darwin-amd64/cci-iam-authenticator';
         default:
-            return 'https://cci-iam-authenticator.obs.cn-north-4.myhuaweicloud.com/latest/linux-amd64/cci-iam-authenticator';
+            throw new Error('The cci-iam-authenticator supports only Linux and Darwin platforms.');
     }
 }
 
