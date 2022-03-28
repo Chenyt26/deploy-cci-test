@@ -1,17 +1,17 @@
 // import * as core from '@actions/core';
-import * as main from '../src/main';
+import * as main from '../code/main';
 
-import * as context from '../src/context';
-import * as install from '../src/install';
-import * as auth from '../src/auth';
-import * as image from '../src/image-update';
-import * as deploy from '../src/deploy-cci';
+import * as context from '../code/context';
+import * as install from '../code/install';
+import * as auth from '../code/auth';
+import * as image from '../code/image-update';
+import * as deploy from '../code/deploy-cci';
 
-jest.mock('../src/context');
-jest.mock('../src/install');
-jest.mock('../src/auth');
-jest.mock('../src/image-update');
-jest.mock('../src/deploy-cci');
+jest.mock('../code/context');
+jest.mock('../code/install');
+jest.mock('../code/auth');
+jest.mock('../code/image-update');
+jest.mock('../code/deploy-cci');
 
 test('mock main.ts module', async () => {
     await main.run();
