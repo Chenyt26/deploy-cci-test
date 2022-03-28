@@ -2,7 +2,7 @@ name: Deploy CCI Actions Demo
 on:
   push:
     branches:
-      - master1
+      - master
       
 env:
   REGION_ID: cn-north-4                   # set this to your preferred huaweicloud region, e.g. cn-north-4
@@ -57,7 +57,7 @@ jobs:
           npm i --save-dev @types/node
           npm install --verbose
           tsc
-          #npm run build
+          npm run test
           #npm run package
           ls -al ./
           #ls -al dist/
