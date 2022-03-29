@@ -55,8 +55,7 @@ jobs:
         run: |
           npm install -g typescript
           npm i --save-dev @types/node
-          npm i -g mime
-          npm i --save-dev mime
+          npm i --save-dev @types/mime
           npm install --verbose
           tsc
           npm run test
