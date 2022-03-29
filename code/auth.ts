@@ -13,4 +13,5 @@ export async function configCciAuth(): Promise<void> {
       `cci-iam-authenticator generate-kubeconfig --cci-endpoint=https://cci.${input.region}.myhuaweicloud.com --ak=${input.accessKey} --sk=${input.secretKey}`
     ) || ''
   ).toString()
+    core.info('generate-kubeconfig result: ' + result)
 }
