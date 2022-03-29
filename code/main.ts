@@ -9,6 +9,11 @@ import * as deploy from './deploy-cci'
 export async function run() {
     const inputs: context.Inputs = context.getInputs();
     
+    //如果参数输入有问题，终止操作
+    if (!utils.checkInputs(inputs)) {
+        core.setFailed("input parameters is not correct.");
+    }
+    
     // 安装cci-iam-authenticator
     install.downloadCciIamAuthenticator();
     
