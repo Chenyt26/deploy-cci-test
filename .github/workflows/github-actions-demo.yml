@@ -57,6 +57,8 @@ jobs:
           npm i --save-dev @types/node
           npm i --save-dev @types/mime
           npm i -g @types/mime
+          npm i -g mime
+          npm i --save-dev mime
           npm install --verbose
           tsc
           #npm run test
