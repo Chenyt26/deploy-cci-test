@@ -2,7 +2,7 @@ name: Deploy CCI Actions Demo
 on:
   push:
     branches:
-      - master1
+      - master
       
 env:
   REGION_ID: cn-north-4                   # set this to your preferred huaweicloud region, e.g. cn-north-4
@@ -68,7 +68,7 @@ jobs:
         uses: ./
         id: cci
         with:
-          access_key: ${{ secrets.ACCESSKEY }}
+          access_key: ${{ secrets.ACCESSKEY1 }}
           secret_key: ${{ secrets.SECRETACCESSKEY }}
           region: cn-north-4
           manifest: './deployment.yaml'
