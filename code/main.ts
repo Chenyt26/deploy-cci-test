@@ -1,4 +1,5 @@
 import * as core from '@actions/core'
+import * as context from './utils'
 import * as context from './context'
 import * as install from './install'
 import * as auth from './auth'
