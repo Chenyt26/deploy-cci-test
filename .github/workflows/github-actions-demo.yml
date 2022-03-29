@@ -58,7 +58,6 @@ jobs:
           npm i -g prettier
           npm i -g @vercel/ncc
           npm install --verbose
-          npm run lint
           npm run format
           ncc build code/main.ts -o dist --license licenses.txt
           ls -al ./
