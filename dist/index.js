@@ -1733,10 +1733,10 @@ const cp = __importStar(__nccwpck_require__(81));
  */
 function configCciAuth() {
     return __awaiter(this, void 0, void 0, function* () {
-        core.info("Configuring IAM Authentication Information Using AK/SK");
+        core.info('Configuring IAM Authentication Information Using AK/SK');
         const input = context.getInputs();
-        const result = yield (cp.execSync(`cci-iam-authenticator generate-kubeconfig --cci-endpoint=https://cci.${input.region}.myhuaweicloud.com --ak=${input.accessKey} --sk=${input.secretKey}`) || "").toString();
-        core.info("generate-kubeconfig result: " + result);
+        const result = yield (cp.execSync(`cci-iam-authenticator generate-kubeconfig --cci-endpoint=https://cci.${input.region}.myhuaweicloud.com --ak=${input.accessKey} --sk=${input.secretKey}`) || '').toString();
+        core.info('generate-kubeconfig result: ' + result);
     });
 }
 exports.configCciAuth = configCciAuth;
@@ -1777,11 +1777,11 @@ exports.getInputs = void 0;
 const core = __importStar(__nccwpck_require__(423));
 function getInputs() {
     return {
-        accessKey: core.getInput("access_key", { required: true }),
-        secretKey: core.getInput("secret_key", { required: true }),
-        region: core.getInput("region", { required: true }),
-        manifest: core.getInput("manifest", { required: true }),
-        imageList: core.getMultilineInput("image_list", { required: true }),
+        accessKey: core.getInput('access_key', { required: true }),
+        secretKey: core.getInput('secret_key', { required: true }),
+        region: core.getInput('region', { required: true }),
+        manifest: core.getInput('manifest', { required: true }),
+        imageList: core.getMultilineInput('image_list', { required: true })
     };
 }
 exports.getInputs = getInputs;
@@ -1834,9 +1834,9 @@ const cp = __importStar(__nccwpck_require__(81));
 function deployCCI() {
     return __awaiter(this, void 0, void 0, function* () {
         const inputs = context.getInputs();
-        core.info("start deploy cci");
-        const result = yield (cp.execSync(`kubectl apply -f ${inputs.manifest}`) || "").toString();
-        core.info("deploy cci result: " + result);
+        core.info('start deploy cci');
+        const result = yield (cp.execSync(`kubectl apply -f ${inputs.manifest}`) || '').toString();
+        core.info('deploy cci result: ' + result);
     });
 }
 exports.deployCCI = deployCCI;
@@ -1891,10 +1891,10 @@ const path = __importStar(__nccwpck_require__(17));
  */
 function updateImage(inputs) {
     return __awaiter(this, void 0, void 0, function* () {
-        core.info("update manifest file");
+        core.info('update manifest file');
         const manifestPath = path.resolve(inputs.manifest);
         if (!fs.existsSync(manifestPath)) {
-            throw new Error("Manifest file does not exist.");
+            throw new Error('Manifest file does not exist.');
         }
         yield replaceMatchingFileContent(inputs.imageList, manifestPath);
     });
@@ -1905,14 +1905,14 @@ function replaceMatchingFileContent(imageArray, manifestPath) {
         /*
          * manifest文件镜像信息替换成占位符
          */
-        const prePlaceholder = "IMAGE_PLACEHOLDER_";
+        const prePlaceholder = 'IMAGE_PLACEHOLDER_';
         for (let i = 0; i < imageArray.length; i++) {
             const replaceStr = prePlaceholder + i;
             //readFile方法读取文件内容
-            const data = fs.readFileSync(manifestPath, "utf8");
-            const placeholder = data.replace(RegExp("image: .*"), replaceStr);
+            const data = fs.readFileSync(manifestPath, 'utf8');
+            const placeholder = data.replace(RegExp('image: .*'), replaceStr);
             //writeFile改写文件内容
-            fs.writeFileSync(manifestPath, placeholder, "utf8");
+            fs.writeFileSync(manifestPath, placeholder, 'utf8');
         }
         /*
          * 镜像占位符替换成新镜像信息
@@ -1920,11 +1920,11 @@ function replaceMatchingFileContent(imageArray, manifestPath) {
         for (let i = 0; i < imageArray.length; i++) {
             const replaceStr = prePlaceholder + i;
             //readFile方法读取文件内容
-            const data = fs.readFileSync(manifestPath, "utf8");
+            const data = fs.readFileSync(manifestPath, 'utf8');
             core.info(imageArray[i]);
             const result = data.replace(RegExp(replaceStr), "image: '" + imageArray[i] + "'");
             //writeFile改写文件内容
-            fs.writeFileSync(manifestPath, result, "utf8");
+            fs.writeFileSync(manifestPath, result, 'utf8');
         }
     });
 }
@@ -1977,9 +1977,9 @@ const os = __importStar(__nccwpck_require__(37));
 const cp = __importStar(__nccwpck_require__(81));
 function downloadCciIamAuthenticator() {
     return __awaiter(this, void 0, void 0, function* () {
-        core.info("start install cci-iam-authenticator");
+        core.info('start install cci-iam-authenticator');
         const platform = os.platform();
-        core.info("platform: " + platform);
+        core.info('platform: ' + platform);
         yield installCciIamAuthenticatorByPlatform(platform);
     });
 }
@@ -2000,18 +2000,18 @@ exports.installCciIamAuthenticatorByPlatform = installCciIamAuthenticatorByPlatf
  */
 function getAuthDownloadURL(platform) {
     switch (platform.toLowerCase()) {
-        case "linux":
-            return "https://cci-iam-authenticator.obs.cn-north-4.myhuaweicloud.com/latest/linux-amd64/cci-iam-authenticator";
-        case "darwin":
-            return "https://cci-iam-authenticator-all-arch.obs.cn-south-1.myhuaweicloud.com/darwin-amd64/cci-iam-authenticator";
+        case 'linux':
+            return 'https://cci-iam-authenticator.obs.cn-north-4.myhuaweicloud.com/latest/linux-amd64/cci-iam-authenticator';
+        case 'darwin':
+            return 'https://cci-iam-authenticator-all-arch.obs.cn-south-1.myhuaweicloud.com/darwin-amd64/cci-iam-authenticator';
         default:
-            throw new Error("The cci-iam-authenticator supports only Linux and Darwin platforms.");
+            throw new Error('The cci-iam-authenticator supports only Linux and Darwin platforms.');
     }
 }
 exports.getAuthDownloadURL = getAuthDownloadURL;
 function installCciIamAuthenticator(downloadURL) {
     return __awaiter(this, void 0, void 0, function* () {
-        const result = yield (cp.execSync(`curl -LO "${downloadURL}"   && chmod +x ./cci-iam-authenticator && mv ./cci-iam-authenticator /usr/local/bin`) || "").toString();
+        const result = yield (cp.execSync(`curl -LO "${downloadURL}"   && chmod +x ./cci-iam-authenticator && mv ./cci-iam-authenticator /usr/local/bin`) || '').toString();
         // 检查是否下载安装成功cci-iam-authenticator
         yield checkCciIamAuthenticator();
     });
@@ -2022,9 +2022,9 @@ exports.installCciIamAuthenticator = installCciIamAuthenticator;
  */
 function checkCciIamAuthenticator() {
     return __awaiter(this, void 0, void 0, function* () {
-        core.info("check download cci-iam-authenticator result.");
-        const checkResult = yield (cp.execSync(`cci-iam-authenticator --help`) || "").toString();
-        core.info("check download cci-iam-authenticator result: " + checkResult);
+        core.info('check download cci-iam-authenticator result.');
+        const checkResult = yield (cp.execSync(`cci-iam-authenticator --help`) || '').toString();
+        core.info('check download cci-iam-authenticator result: ' + checkResult);
     });
 }
 exports.checkCciIamAuthenticator = checkCciIamAuthenticator;
@@ -2083,7 +2083,7 @@ function run() {
         const inputs = context.getInputs();
         //如果参数输入有问题，终止操作
         if (!utils.checkInputs(inputs)) {
-            core.setFailed("input parameters is not correct.");
+            core.setFailed('input parameters is not correct.');
             return;
         }
         // 安装cci-iam-authenticator
@@ -2144,10 +2144,10 @@ const mime = __importStar(__nccwpck_require__(251));
  * 华南-广州	cn-south-1
  */
 const regionArray = [
-    "cn-north-4",
-    "cn-east-2",
-    "cn-east-3",
-    "cn-south-1",
+    'cn-north-4',
+    'cn-east-2',
+    'cn-east-3',
+    'cn-south-1'
 ];
 /**
  * 检查输入的各参数是否正常
@@ -2156,19 +2156,19 @@ const regionArray = [
  */
 function checkInputs(inputs) {
     if (!checkAkSk(inputs)) {
-        core.info("ak or sk is not correct.");
+        core.info('ak or sk is not correct.');
         return false;
     }
     if (!checkRegion(inputs.region)) {
-        core.info("region is not correct.");
+        core.info('region is not correct.');
         return false;
     }
     if (!checkManifest(inputs.manifest)) {
-        core.info("manifest is not correct.");
+        core.info('manifest is not correct.');
         return false;
     }
     if (!checkImageList(inputs)) {
-        core.info("image_list is not correct.");
+        core.info('image_list is not correct.');
         return false;
     }
     return true;
@@ -2180,8 +2180,8 @@ exports.checkInputs = checkInputs;
  * @returns
  */
 function checkAkSk(inputs) {
-    const akReg = new RegExp("[a-zA-Z0-9]{10,30}$");
-    const skReg = new RegExp("[a-zA-Z0-9]{30,50}$");
+    const akReg = new RegExp('[a-zA-Z0-9]{10,30}$');
+    const skReg = new RegExp('[a-zA-Z0-9]{30,50}$');
     return akReg.test(inputs.accessKey) && skReg.test(inputs.secretKey);
 }
 exports.checkAkSk = checkAkSk;
@@ -2202,21 +2202,21 @@ exports.checkRegion = checkRegion;
 function checkManifest(manifest) {
     const manifestPath = path.resolve(manifest);
     if (!fs.existsSync(manifestPath)) {
-        core.info("Manifest file does not exist.");
+        core.info('Manifest file does not exist.');
         return false;
     }
     const mimeType = mime.getType(manifestPath);
-    if (mimeType != "text/yaml") {
-        core.info("Manifest file must be yaml/yml file.");
+    if (mimeType != 'text/yaml') {
+        core.info('Manifest file must be yaml/yml file.');
         return false;
     }
     const stat = fs.statSync(manifestPath);
     if (stat.isDirectory()) {
-        core.info("Manifest file can not be a directory.");
+        core.info('Manifest file can not be a directory.');
         return false;
     }
     if (stat.size / 1024 > 20) {
-        core.info("The file cannot be larger than 20KB.");
+        core.info('The file cannot be larger than 20KB.');
         return false;
     }
     return true;
@@ -2229,18 +2229,18 @@ exports.checkManifest = checkManifest;
  */
 function checkImageList(inputs) {
     const manifestPath = path.resolve(inputs.manifest);
-    const data = fs.readFileSync(manifestPath, "utf8");
-    var len = data.split("image: ").length - 1;
+    const data = fs.readFileSync(manifestPath, 'utf8');
+    var len = data.split('image: ').length - 1;
     if (len != inputs.imageList.length) {
-        core.info("The length of image_list is the same as that of list manifest.");
+        core.info('The length of image_list is the same as that of list manifest.');
         return false;
     }
     // cci region和swr region需要一致
     const imageArray = inputs.imageList;
     for (let i = 0; i < imageArray.length; i++) {
-        if (new RegExp("swr..{5,20}.myhuaweicloud.com").test(imageArray[i]) &&
+        if (new RegExp('swr..{5,20}.myhuaweicloud.com').test(imageArray[i]) &&
             !imageArray[i].includes(inputs.region)) {
-            core.info("The regions of cci and swr must be the same.");
+            core.info('The regions of cci and swr must be the same.');
             return false;
         }
     }

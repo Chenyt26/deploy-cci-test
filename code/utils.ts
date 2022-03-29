@@ -1,8 +1,8 @@
-import * as context from "./context";
-import * as core from "@actions/core";
-import * as fs from "fs";
-import * as path from "path";
-import * as mime from "mime";
+import * as context from './context'
+import * as core from '@actions/core'
+import * as fs from 'fs'
+import * as path from 'path'
+import * as mime from 'mime'
 
 /**
  * 目前支持云容器实例CCI功能的region列表
@@ -12,11 +12,11 @@ import * as mime from "mime";
  * 华南-广州	cn-south-1
  */
 const regionArray: string[] = [
-  "cn-north-4",
-  "cn-east-2",
-  "cn-east-3",
-  "cn-south-1",
-];
+  'cn-north-4',
+  'cn-east-2',
+  'cn-east-3',
+  'cn-south-1'
+]
 
 /**
  * 检查输入的各参数是否正常
@@ -25,22 +25,22 @@ const regionArray: string[] = [
  */
 export function checkInputs(inputs: context.Inputs): boolean {
   if (!checkAkSk(inputs)) {
-    core.info("ak or sk is not correct.");
-    return false;
+    core.info('ak or sk is not correct.')
+    return false
   }
   if (!checkRegion(inputs.region)) {
-    core.info("region is not correct.");
-    return false;
+    core.info('region is not correct.')
+    return false
   }
   if (!checkManifest(inputs.manifest)) {
-    core.info("manifest is not correct.");
-    return false;
+    core.info('manifest is not correct.')
+    return false
   }
   if (!checkImageList(inputs)) {
-    core.info("image_list is not correct.");
-    return false;
+    core.info('image_list is not correct.')
+    return false
   }
-  return true;
+  return true
 }
 
 /**
@@ -49,9 +49,9 @@ export function checkInputs(inputs: context.Inputs): boolean {
  * @returns
  */
 export function checkAkSk(inputs: context.Inputs): boolean {
-  const akReg: RegExp = new RegExp("[a-zA-Z0-9]{10,30}$");
-  const skReg: RegExp = new RegExp("[a-zA-Z0-9]{30,50}$");
-  return akReg.test(inputs.accessKey) && skReg.test(inputs.secretKey);
+  const akReg: RegExp = new RegExp('[a-zA-Z0-9]{10,30}$')
+  const skReg: RegExp = new RegExp('[a-zA-Z0-9]{30,50}$')
+  return akReg.test(inputs.accessKey) && skReg.test(inputs.secretKey)
 }
 
 /**
@@ -60,7 +60,7 @@ export function checkAkSk(inputs: context.Inputs): boolean {
  * @returns
  */
 export function checkRegion(region: string): boolean {
-  return regionArray.includes(region);
+  return regionArray.includes(region)
 }
 
 /**
@@ -69,26 +69,26 @@ export function checkRegion(region: string): boolean {
  * @returns
  */
 export function checkManifest(manifest: string): boolean {
-  const manifestPath = path.resolve(manifest);
+  const manifestPath = path.resolve(manifest)
   if (!fs.existsSync(manifestPath)) {
-    core.info("Manifest file does not exist.");
-    return false;
+    core.info('Manifest file does not exist.')
+    return false
   }
-  const mimeType = mime.getType(manifestPath);
-  if (mimeType != "text/yaml") {
-    core.info("Manifest file must be yaml/yml file.");
-    return false;
+  const mimeType = mime.getType(manifestPath)
+  if (mimeType != 'text/yaml') {
+    core.info('Manifest file must be yaml/yml file.')
+    return false
   }
-  const stat = fs.statSync(manifestPath);
+  const stat = fs.statSync(manifestPath)
   if (stat.isDirectory()) {
-    core.info("Manifest file can not be a directory.");
-    return false;
+    core.info('Manifest file can not be a directory.')
+    return false
   }
   if (stat.size / 1024 > 20) {
-    core.info("The file cannot be larger than 20KB.");
-    return false;
+    core.info('The file cannot be larger than 20KB.')
+    return false
   }
-  return true;
+  return true
 }
 
 /**
@@ -97,24 +97,24 @@ export function checkManifest(manifest: string): boolean {
  * @returns
  */
 export function checkImageList(inputs: context.Inputs): boolean {
-  const manifestPath = path.resolve(inputs.manifest);
-  const data = fs.readFileSync(manifestPath, "utf8");
-  var len = data.split("image: ").length - 1;
+  const manifestPath = path.resolve(inputs.manifest)
+  const data = fs.readFileSync(manifestPath, 'utf8')
+  var len = data.split('image: ').length - 1
   if (len != inputs.imageList.length) {
-    core.info("The length of image_list is the same as that of list manifest.");
-    return false;
+    core.info('The length of image_list is the same as that of list manifest.')
+    return false
   }
 
   // cci region和swr region需要一致
-  const imageArray = inputs.imageList;
+  const imageArray = inputs.imageList
   for (let i = 0; i < imageArray.length; i++) {
     if (
-      new RegExp("swr..{5,20}.myhuaweicloud.com").test(imageArray[i]) &&
+      new RegExp('swr..{5,20}.myhuaweicloud.com').test(imageArray[i]) &&
       !imageArray[i].includes(inputs.region)
     ) {
-      core.info("The regions of cci and swr must be the same.");
-      return false;
+      core.info('The regions of cci and swr must be the same.')
+      return false
     }
   }
-  return true;
+  return true
 }
