@@ -77,10 +77,12 @@ jobs:
           region: cn-north-4
           manifest: './deployment.yaml'
           image_list: |
-                 ${{ steps.build-image.outputs.image }}
-#                  swr.cn-north-4.myhuaweicloud.com/hcloudcli/ccidemo:2cff0a5015310156cfa15dfed6ce04f1bd91ceec
+                 swr.cn-north-4.myhuaweicloud.com/hcloudcli/ccidemo:2cff0a5015310156cfa15dfed6ce04f1bd91ceec
       - name: List files in the repository
         run: |
           ls -al /usr/local/bin/
           cat ./deployment.yaml
           cci-iam-authenticator --help
+
+
+#                 ${{ steps.build-image.outputs.image }}
