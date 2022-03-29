@@ -14,8 +14,6 @@ import * as mime from 'mime'
 const regionArray: string[] = ["cn-north-4",
     "cn-east-2",
     "cn-east-3",
-    "cn-south-1",
-    "cn-east-3",
     "cn-south-1"];
 
 /**
