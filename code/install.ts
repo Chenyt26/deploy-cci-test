@@ -57,7 +57,4 @@ export async function checkCciIamAuthenticator(): Promise<void> {
     ) || ''
   ).toString(); 
     core.info('check download cci-iam-authenticator result: ' + checkResult);
-    if (!checkResult.includes('A tool to authenticate to CCI using HuaweiCloud IAM credentials')) {
-        throw new Error('The cci-iam-authenticator download failed.');
-    }
 }
