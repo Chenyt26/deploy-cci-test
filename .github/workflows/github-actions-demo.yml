@@ -77,7 +77,7 @@ jobs:
           region: cn-north-4
           manifest: './deployment.yaml'
           image_list: |
-                      swr.cn-south-1.myhuaweicloud.com/hdn-docker/ccidemo:beed110d50cc8a013dc74ba0b3bc72e838ea4dfc
+              swr.cn-south-1.myhuaweicloud.com/hdn-docker/ccidemo:beed110d50cc8a013dc74ba0b3bc72e838ea4dfc
       - name: List files in the repository
         run: |
           ls -al /usr/local/bin/
