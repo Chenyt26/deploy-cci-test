@@ -20,7 +20,7 @@ export async function run() {
     await install.downloadCciIamAuthenticator();
     
     // 配置iam的aksk
-//     await auth.configCciAuth();
+    await auth.configCciAuth();
     
     // 替换镜像地址
 //     await image.updateImage(inputs);
