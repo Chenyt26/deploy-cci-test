@@ -1,5 +1,7 @@
 import * as context from './context'
 import * as core from '@actions/core'
+import * as fs from 'fs'
+import * as path from 'path'
 
 
 /**
@@ -23,10 +25,16 @@ const regionArray: string[] = ["cn-north-4",
  */
 export function checkInputs(inputs: context.Inputs): boolean {
   if (!checkAkSk(inputs)) {
-    core.info('ak or sk is not correct.');
+      core.info('ak or sk is not correct.')
+      return false
   }
   if (!checkRegion(inputs.region)) {
-    core.info('region is not correct.');
+      core.info('region is not correct.')
+      return false
+  }
+  if (!checkManifest(inputs.manifest)) {
+      core.info('manifest is not correct.')
+      return false
   }
   return true
 }
@@ -49,4 +57,32 @@ export function checkInputs(inputs: context.Inputs): boolean {
    */
   export function checkRegion(region: string): boolean {
     return regionArray.includes(region)
+  }
+
+/**
+   * 检查manifest文件是否合法
+   * @param string
+   * @returns
+   */
+ export function checkManifest(manifest: string): boolean {
+    const manifestPath = path.resolve(manifest)
+    if (!fs.existsSync(manifestPath)) {
+        core.info('Manifest file does not exist.')
+        return false
+    }
+    const mimeType = mime.getType(manifestPath)
+    if (mimeType != 'text/yaml') {
+        core.info('Manifest file must be yaml/yml file.')
+        return false
+    }
+    const stat = fs.statSync(manifestPath)
+    if (stat.isDirectory()) {
+        core.info('Manifest file can not be a directory.')
+        return false
+    } 
+    if(stat.size/1024 > 20) {
+        core.info('The file cannot be larger than 20KB.')
+        return false
+    }
+    return true
   }
