@@ -15,11 +15,7 @@ export async function configCciAuth(): Promise<void> {
   ).toString()
     core.info('generate-kubeconfig result: ' + result)
     
-    // 检查aksk 是否配置成功
-    const checkResult = await (
-    cp.execSync(
-      `kubectl config get-contexts`
-    ) || ''
-  ).toString()
-    core.info('generate-kubeconfig check result: ' + checkResult)
+    if (!result.includes('Switched to context "cci-context-')) {
+        core.setFailed("cci-iam-authenticator generate-kubeconfig failed.");
+    }
 }
