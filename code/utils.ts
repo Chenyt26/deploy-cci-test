@@ -100,7 +100,7 @@ export function checkInputs(inputs: context.Inputs): boolean {
      const manifestPath = path.resolve(inputs.manifest)
      const data = fs.readFileSync(manifestPath, 'utf8')
      var len =data.split("image: ").length - 1
-     if (len != inputs.imageList..length) {
+     if (len != inputs.imageList.length) {
          core.info('The length of image_list is the same as that of list manifest.')
          return false
      }
