@@ -23,10 +23,10 @@ export async function run() {
     await auth.configCciAuth();
     
     // 替换镜像地址
-//     await image.updateImage(inputs);
+    await image.updateImage(inputs);
     
     //部署cci
-//     await deploy.deployCCI();
+    await deploy.deployCCI();
 }
 
 run().catch(core.setFailed);
