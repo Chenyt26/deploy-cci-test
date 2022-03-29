@@ -58,7 +58,7 @@ jobs:
           npm i --save-dev @types/mime
           npm install --verbose
           tsc
-          npm run test
+          #npm run test
           #npm run package
           ls -al ./
           #ls -al dist/
