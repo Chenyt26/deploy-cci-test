@@ -2,7 +2,7 @@ name: Deploy CCI Actions Demo
 on:
   push:
     branches:
-      - master
+      - master1
       
 env:
   REGION_ID: cn-north-4                   # set this to your preferred huaweicloud region, e.g. cn-north-4
@@ -77,7 +77,7 @@ jobs:
           region: cn-north-4
           manifest: './deployment.yaml'
           image_list: |
-              dragonwell-registry.cn-hangzhou.cr.aliyuncs.com/dragonwell/dragonwell
+              swr.cn-north-4.myhuaweicloud.com/hcloudcli/ccidemo:2cff0a5015310156cfa15dfed6ce04f1bd91ceec
       - name: List files in the repository
         run: |
           ls -al /usr/local/bin/
