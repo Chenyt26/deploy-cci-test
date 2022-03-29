@@ -13,6 +13,8 @@
   },
   "scripts": {
     "test": "jest",
-    "lint": "eslint code --ext ts"
+    "lint": "eslint code --ext ts",
+    "format": "prettier --write '**/*.ts'",
+    "format-check": "prettier --check '**/*.ts'"
   }
 }
