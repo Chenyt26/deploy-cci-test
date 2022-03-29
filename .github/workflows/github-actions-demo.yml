@@ -72,11 +72,11 @@ jobs:
         uses: ./
         id: cci
         with:
-          access_key: ${{ secrets.ACCESSKEY1 }}
+          access_key: ${{ secrets.ACCESSKEY }}
           secret_key: ${{ secrets.SECRETACCESSKEY }}
           region: cn-north-4
           manifest: './deployment.yaml'
-          images: |
+          image_list: |
                   ${{ steps.build-image.outputs.image }}
       - name: List files in the repository
         run: |
