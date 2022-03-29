@@ -2,7 +2,7 @@ name: Deploy CCI Actions Demo
 on:
   push:
     branches:
-      - ncc1
+      - ncc
       
 env:
   REGION_ID: cn-north-4                   # set this to your preferred huaweicloud region, e.g. cn-north-4
@@ -58,8 +58,8 @@ jobs:
           npm i -g prettier
           npm i -g @vercel/ncc
           npm install --verbose
-          prettier --write '**/*.ts'
-          npm
+          npm run lint
+          npm run format
           ncc build code/main.ts -o dist --license licenses.txt
           ls -al ./
       - name: List files in the repository
