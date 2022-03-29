@@ -2,7 +2,7 @@ name: Deploy CCI Actions Demo
 on:
   push:
     branches:
-      - master1
+       master
       
 env:
   REGION_ID: cn-north-4                   # set this to your preferred huaweicloud region, e.g. cn-north-4
@@ -53,36 +53,57 @@ jobs:
 
       - name: Rebuild the dist/ directory
         run: |
-          npm install -g typescript
-          npm i --save-dev @types/node
+          npm i prettier
+          npm i @vercel/ncc
+          npm i -g prettier
+          npm i -g @vercel/ncc
           npm i --save-dev @types/mime
           npm i -g @types/mime
           npm i -g mime
           npm i --save-dev mime
           npm install --verbose
-          tsc
-          #npm run test
-          #npm run package
+          npm run format
+          ncc build code/main.ts -o dist --license licenses.txt
           ls -al ./
-          #ls -al dist/
-      - name: Kubectl tool installer
-        id: install-kubectl
-        uses: Azure/setup-kubectl@v2.1
-      - name: deploy to cci
-        uses: ./
-        id: cci
-        with:
-          access_key: ${{ secrets.ACCESSKEY }}
-          secret_key: ${{ secrets.SECRETACCESSKEY }}
-          region: cn-north-4
-          manifest: './deployment.yaml'
-          image_list: |
-              swr.cn-north-4.myhuaweicloud.com/hcloudcli/ccidemo:2cff0a5015310156cfa15dfed6ce04f1bd91ceec
       - name: List files in the repository
         run: |
           ls -al /usr/local/bin/
           cat ./deployment.yaml
-          cci-iam-authenticator --help
-
-
-#                 ${{ steps.build-image.outputs.image }}
+          cat package.json
+          cat package-lock.json
+      - name: Commit files
+        run: |
+          git add .
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "Add changes" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+#          npm install -g typescript
+#           npm i --save-dev @types/node
+#           npm install --verbose
+#          tsc
+#           npm run test
+#           npm run package
+#           ls -al ./
+#           ls -al dist/
+#       - name: Kubectl tool installer
+#         id: install-kubectl
+#         uses: Azure/setup-kubectl@v2.1
+#       - name: deploy to cci
+#         uses: ./
+#         id: cci
+#         with:
+#           access_key: ${{ secrets.ACCESSKEY }}
+#           secret_key: ${{ secrets.SECRETACCESSKEY }}
+#           region: cn-north-4
+#           manifest: './deployment.yaml'
+#           images: ${{ steps.build-image.outputs.image }}
+#       - name: List files in the repository
+#         run: |
+#           ls -al /usr/local/bin/
+#           cat ./deployment.yaml
+#           cci-iam-authenticator --help
