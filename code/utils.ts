@@ -102,5 +102,14 @@ export function checkInputs(inputs: context.Inputs): boolean {
          core.info('The length of image_list is the same as that of list manifest.')
          return false
      }
+     
+     // cci region和swr region需要一致
+     const imageArray = inputs.imageList
+     for (let i = 0; i < imageArray.length; i++) {
+         if (new RegExp("swr\..{5,20}\.myhuaweicloud\.com").test(imageArray[i]) && !imageArray[i].includes(inputs.region)) {
+             core.info('The regions of cci and swr must be the same.')
+            return false
+         }
+     }
      return true
  }
