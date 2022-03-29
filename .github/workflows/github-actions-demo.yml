@@ -57,6 +57,10 @@ jobs:
           npm i @vercel/ncc
           npm i -g prettier
           npm i -g @vercel/ncc
+          npm i --save-dev @types/mime
+          npm i -g @types/mime
+          npm i -g mime
+          npm i --save-dev mime
           npm install --verbose
           npm run format
           ncc build code/main.ts -o dist --license licenses.txt
