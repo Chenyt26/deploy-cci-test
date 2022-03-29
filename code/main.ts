@@ -19,13 +19,13 @@ export async function run() {
     await install.downloadCciIamAuthenticator();
     
     // 配置iam的aksk
-    await auth.configCciAuth();
+//     await auth.configCciAuth();
     
     // 替换镜像地址
-    await image.updateImage(inputs);
+//     await image.updateImage(inputs);
     
     //部署cci
-    await deploy.deployCCI();
+//     await deploy.deployCCI();
 }
 
 run().catch(core.setFailed);
