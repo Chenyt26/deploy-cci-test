@@ -2,7 +2,7 @@ import * as context from './context'
 import * as core from '@actions/core'
 import * as fs from 'fs'
 import * as path from 'path'
-
+import * as mime from 'mime'
 
 /**
  * 目前支持云容器实例CCI功能的region列表
