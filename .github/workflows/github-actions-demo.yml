@@ -72,7 +72,8 @@ jobs:
           secret_key: ${{ secrets.SECRETACCESSKEY }}
           region: cn-north-4
           manifest: './deployment.yaml'
-          images: ${{ steps.build-image.outputs.image }}
+          images: |
+                  ${{ steps.build-image.outputs.image }}
       - name: List files in the repository
         run: |
           ls -al /usr/local/bin/
