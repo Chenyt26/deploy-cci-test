@@ -36,6 +36,10 @@ export function checkInputs(inputs: context.Inputs): boolean {
       core.info('manifest is not correct.')
       return false
   }
+  if (!checkImageList(inputs)) {
+      core.info('image_list is not correct.')
+      return false
+  }
   return true
 }
 
@@ -86,3 +90,19 @@ export function checkInputs(inputs: context.Inputs): boolean {
     }
     return true
   }
+
+/**
+   * 检查镜像列表是否合法
+   * @param string[]
+   * @returns
+   */
+ export function checkImageList(inputs: context.Inputs): boolean {
+     const manifestPath = path.resolve(inputs.manifest)
+     const data = fs.readFileSync(manifestPath, 'utf8')
+     var len =data.split("image: ").length - 1
+     if (len != inputs.imageList..length) {
+         core.info('The length of image_list is the same as that of list manifest.')
+         return false
+     }
+     return true
+ }
