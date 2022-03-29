@@ -37,7 +37,6 @@ export function getAuthDownloadURL(platform: string): string {
   }
 }
 
-
 export async function installCciIamAuthenticator(
   downloadURL: string
 ): Promise<void> {

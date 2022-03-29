@@ -54,7 +54,6 @@ export function checkAkSk(inputs: context.Inputs): boolean {
   return akReg.test(inputs.accessKey) && skReg.test(inputs.secretKey)
 }
 
-
 /**
  * 检查region是否合法
  * @param inputs
