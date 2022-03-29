@@ -18,30 +18,30 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-#       - name: Build with Maven
-#         id: build-project
-#         run: mvn package -Dmaven.test.skip=true -U -e -X -B
+      - name: Build with Maven
+        id: build-project
+        run: mvn package -Dmaven.test.skip=true -U -e -X -B
         
-#       - name: Log in to HuaweiCloud SWR
-#         uses: huaweicloud/swr-login@v1
-#         with:
-#           region: cn-north-4
-#           access-key-id: ${{ secrets.ACCESSKEY }}
-#           access-key-secret: ${{ secrets.SECRETACCESSKEY }}
+      - name: Log in to HuaweiCloud SWR
+        uses: huaweicloud/swr-login@v1
+        with:
+          region: cn-north-4
+          access-key-id: ${{ secrets.ACCESSKEY }}
+          access-key-secret: ${{ secrets.SECRETACCESSKEY }}
 
-#       - name: Build, tag, and push image to HuaweiCloud SWR
-#         id: build-image
-#         env:
-#           SWR_REGISTRY: swr.cn-north-4.myhuaweicloud.com
-#           SWR_ORGANIZATION: ${{ env.SWR_ORGANIZATION }}
-#           IMAGE_TAG: ${{ github.sha }}
-#           IMAGE_NAME: ${{ env.IMAGE_NAME }}
-#         run: |
-#           # Build a docker container and
-#           # push it to SWR so that it can
-#           docker build -t $SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG .
-#           docker push $SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG
-#           echo "::set-output name=image::$SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG"
+      - name: Build, tag, and push image to HuaweiCloud SWR
+        id: build-image
+        env:
+          SWR_REGISTRY: swr.cn-north-4.myhuaweicloud.com
+          SWR_ORGANIZATION: ${{ env.SWR_ORGANIZATION }}
+          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+        run: |
+          # Build a docker container and
+          # push it to SWR so that it can
+          docker build -t $SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG .
+          docker push $SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG
+          echo "::set-output name=image::$SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG"
 
       - name: Set Node.js 16.x
         uses: actions/setup-node@v2.5.1
