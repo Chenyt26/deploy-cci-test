@@ -39,10 +39,9 @@ export function getAuthDownloadURL(platform: string): string {
 export async function installCciIamAuthenticator(downloadURL: string): Promise<void> {
     const result =  await (
     cp.execSync(
-      `curl -LO "${downloadURL}"   && chmod +x ./cci-iam-authenticator && mv ./cci-iam-authenticator /usr/local/bin`
+      `curl -LO "${downloadURL}"   && chmod +x ./cci-iam-authenticator `
     ) || ''
   ).toString(); 
-    core.info('download cci-iam-authenticator result: ' + result);
     
     // 检查是否下载安装成功cci-iam-authenticator
     await checkCciIamAuthenticator();
@@ -59,7 +58,6 @@ export async function checkCciIamAuthenticator(): Promise<void> {
   ).toString(); 
     core.info('check download cci-iam-authenticator result: ' + checkResult);
     if (!checkResult.includes('A tool to authenticate to CCI using HuaweiCloud IAM credentials')) {
-        core.info("download cci-iam-authenticator failed.")
         throw new Error('The cci-iam-authenticator download failed.');
     }
 }
