@@ -16,7 +16,7 @@ export async function run() {
     }
     
     // 安装cci-iam-authenticator
-    install.downloadCciIamAuthenticator();
+    await install.downloadCciIamAuthenticator();
     
     // 配置iam的aksk
     await auth.configCciAuth();
