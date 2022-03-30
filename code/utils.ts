@@ -84,7 +84,7 @@ export function checkManifest(manifest: string): boolean {
     core.info('Manifest file can not be a directory.')
     return false
   }
-  if (stat.size / 1024 > 20) {
+  if (stat.size / 1024 > 20 || stat.size <= 0) {
     core.info('The file cannot be larger than 20KB.')
     return false
   }
