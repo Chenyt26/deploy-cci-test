@@ -17,6 +17,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "build-ncc": "ncc build code/main.ts -o dist --license licenses.txt"
     "test": "jest",
     "lint": "eslint code test --ext ts",
     "format": "prettier --write '**/*.ts'",
