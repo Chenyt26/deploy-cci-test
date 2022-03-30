@@ -157,5 +157,5 @@ jobs:
 # #       - name: List files in the repository
 # #         run: |
 # #           ls -al /usr/local/bin/
-# #           cat ./deployment.yaml
+# #           cat ./deploymenvct.yaml
 # #           cci-iam-authenticator --help
