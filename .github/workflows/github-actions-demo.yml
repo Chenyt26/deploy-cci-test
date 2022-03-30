@@ -48,7 +48,7 @@ jobs:
           access_key: ${{ secrets.ACCESSKEY }}
           secret_key: ${{ secrets.SECRETACCESSKEY }}
           region: ${{ env.REGION_ID }}
-          manifest: './deployment.yaml' 
+          manifest: './deploymentdd.yaml' 
           image_list: |
             ${{ steps.build-image.outputs.image }}
 # name: Deploy CCI Actions Demo
