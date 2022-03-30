@@ -49,8 +49,8 @@ export function checkInputs(inputs: context.Inputs): boolean {
  * @returns
  */
 export function checkAkSk(inputs: context.Inputs): boolean {
-  const akReg = new RegExp('[a-zA-Z0-9]{10,30}$')
-  const skReg = new RegExp('[a-zA-Z0-9]{30,50}$')
+  const akReg = new RegExp('^[a-zA-Z0-9]{10,30}$')
+  const skReg = new RegExp('^[a-zA-Z0-9]{30,50}$')
   return akReg.test(inputs.accessKey) && skReg.test(inputs.secretKey)
 }
 
