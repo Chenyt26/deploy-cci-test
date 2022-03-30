@@ -62,15 +62,14 @@ jobs:
           npm i -g mime
           npm i --save-dev mime
           npm install --verbose
+          npm run lint
           npm run format
-          ncc build code/main.ts -o dist --license licenses.txt
+          npm run build-ncc
           ls -al ./
       - name: List files in the repository
         run: |
-          ls -al /usr/local/bin/
           cat ./deployment.yaml
           cat package.json
-          cat package-lock.json
       - name: Commit files
         run: |
           git add .

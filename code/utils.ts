@@ -49,8 +49,8 @@ export function checkInputs(inputs: context.Inputs): boolean {
  * @returns
  */
 export function checkAkSk(inputs: context.Inputs): boolean {
-  const akReg = new RegExp('[a-zA-Z0-9]{10,30}$')
-  const skReg = new RegExp('[a-zA-Z0-9]{30,50}$')
+  const akReg = new RegExp('^[a-zA-Z0-9]{10,30}$')
+  const skReg = new RegExp('^[a-zA-Z0-9]{30,50}$')
   return akReg.test(inputs.accessKey) && skReg.test(inputs.secretKey)
 }
 
@@ -84,7 +84,7 @@ export function checkManifest(manifest: string): boolean {
     core.info('Manifest file can not be a directory.')
     return false
   }
-  if (stat.size / 1024 > 20) {
+  if (stat.size / 1024 > 20 || stat.size <= 0) {
     core.info('The file cannot be larger than 20KB.')
     return false
   }
@@ -99,7 +99,7 @@ export function checkManifest(manifest: string): boolean {
 export function checkImageList(inputs: context.Inputs): boolean {
   const manifestPath = path.resolve(inputs.manifest)
   const data = fs.readFileSync(manifestPath, 'utf8')
-  var len = data.split('image: ').length - 1
+  const len = data.split('image: ').length - 1
   if (len != inputs.imageList.length) {
     core.info('The length of image_list is the same as that of list manifest.')
     return false
