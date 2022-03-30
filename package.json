@@ -16,8 +16,9 @@
     "mime": "^3.0.0"
   },
   "scripts": {
+    "build": "tsc",
     "test": "jest",
-    "lint": "eslint code --ext ts",
+    "lint": "eslint code test --ext ts",
     "format": "prettier --write '**/*.ts'",
     "format-check": "prettier --check '**/*.ts'"
   }
