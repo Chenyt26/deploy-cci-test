@@ -1,108 +1,161 @@
 name: Deploy CCI Actions Demo
-on:
-  push:
-    branches:
-       master
+on: [push]
       
 env:
-  REGION_ID: cn-north-4                   # set this to your preferred huaweicloud region, e.g. cn-north-4
+  REGION_ID: cn-north-4                  # set this to your preferred huaweicloud region, e.g. cn-north-4
   ACCESS_KEY_ID: ${{ secrets.ACCESSKEY }}             # set this to your huaweicloud access-key-id
   ACCESS_KEY_SECRET: ${{ secrets.SECRETACCESSKEY }}               # set this to your huaweicloud access-key-secret
-  SWR_ORGANIZATION:  hcloudcli   # set this to your huaweicloud SWR organization
-  IMAGE_NAME: ccidemo # set this to your image name
-      
-      
+  SWR_ORGANIZATION:  hcloudcli   # SWR 组织名
+  IMAGE_NAME: ccidemo       # 镜像名称
+            
 jobs:
   deploy_cci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       
-#       - name: Build with Maven
-#         id: build-project
-#         run: mvn package -Dmaven.test.skip=true -U -e -X -B
+      - name: Build with Maven
+        id: build-project
+        run: mvn package -Dmaven.test.skip=true -U -e -X -B
         
-#       - name: Log in to HuaweiCloud SWR
-#         uses: huaweicloud/swr-login@v1
-#         with:
-#           region: cn-north-4
-#           access-key-id: ${{ secrets.ACCESSKEY }}
-#           access-key-secret: ${{ secrets.SECRETACCESSKEY }}
+      - name: Log in to HuaweiCloud SWR
+        uses: huaweicloud/swr-login@v1
+        with:
+          region: ${{ env.REGION_ID }}
+          access-key-id: ${{ secrets.ACCESSKEY }}
+          access-key-secret: ${{ secrets.SECRETACCESSKEY }}
 
-#       - name: Build, tag, and push image to HuaweiCloud SWR
-#         id: build-image
-#         env:
-#           SWR_REGISTRY: swr.cn-north-4.myhuaweicloud.com
-#           SWR_ORGANIZATION: ${{ env.SWR_ORGANIZATION }}
-#           IMAGE_TAG: ${{ github.sha }}
-#           IMAGE_NAME: ${{ env.IMAGE_NAME }}
+      - name: Build, tag, and push image to HuaweiCloud SWR
+        id: build-image
+        env:
+          SWR_REGISTRY: swr.${{ env.REGION_ID }}.myhuaweicloud.com
+          SWR_ORGANIZATION: ${{ env.SWR_ORGANIZATION }}
+          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+        run: |
+          docker build -t $SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG .
+          docker push $SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG
+          echo "::set-output name=image::$SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG"
+
+      - name: Kubectl tool installer
+        id: install-kubectl
+        uses: Azure/setup-kubectl@v2.1
+
+      - name: HuaweiCloud CCI Deoloy
+        uses: huaweicloud/deploy-cci-action@v1.0.0
+        id: deploy-to-cci
+        with:
+          access_key: ${{ secrets.ACCESSKEY }}
+          secret_key: ${{ secrets.SECRETACCESSKEY }}
+          region: ${{ env.REGION_ID }}
+          manifest: './deployment.yaml' 
+          image_list: |
+            ${{ steps.build-image.outputs.image }}
+# name: Deploy CCI Actions Demo
+# on:
+#   push:
+#     branches:
+#        master
+      
+# env:
+#   REGION_ID: cn-north-4                   # set this to your preferred huaweicloud region, e.g. cn-north-4
+#   ACCESS_KEY_ID: ${{ secrets.ACCESSKEY }}             # set this to your huaweicloud access-key-id
+#   ACCESS_KEY_SECRET: ${{ secrets.SECRETACCESSKEY }}               # set this to your huaweicloud access-key-secret
+#   SWR_ORGANIZATION:  hcloudcli   # set this to your huaweicloud SWR organization
+#   IMAGE_NAME: ccidemo # set this to your image name
+      
+      
+# jobs:
+#   deploy_cci:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+      
+# #       - name: Build with Maven
+# #         id: build-project
+# #         run: mvn package -Dmaven.test.skip=true -U -e -X -B
+        
+# #       - name: Log in to HuaweiCloud SWR
+# #         uses: huaweicloud/swr-login@v1
+# #         with:
+# #           region: cn-north-4
+# #           access-key-id: ${{ secrets.ACCESSKEY }}
+# #           access-key-secret: ${{ secrets.SECRETACCESSKEY }}
+
+# #       - name: Build, tag, and push image to HuaweiCloud SWR
+# #         id: build-image
+# #         env:
+# #           SWR_REGISTRY: swr.cn-north-4.myhuaweicloud.com
+# #           SWR_ORGANIZATION: ${{ env.SWR_ORGANIZATION }}
+# #           IMAGE_TAG: ${{ github.sha }}
+# #           IMAGE_NAME: ${{ env.IMAGE_NAME }}
+# #         run: |
+# #           # Build a docker container and
+# #           # push it to SWR so that it can
+# #           docker build -t $SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG .
+# #           docker push $SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG
+# #           echo "::set-output name=image::$SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG"
+
+#       - name: Set Node.js 16.x
+#         uses: actions/setup-node@v2.5.1
+#         with:
+#           node-version: 16.x
+
+# #       - name: Install dependencies
+# #         run: npm ci
+
+#       - name: Rebuild the dist/ directory
 #         run: |
-#           # Build a docker container and
-#           # push it to SWR so that it can
-#           docker build -t $SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG .
-#           docker push $SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG
-#           echo "::set-output name=image::$SWR_REGISTRY/$SWR_ORGANIZATION/$IMAGE_NAME:$IMAGE_TAG"
-
-      - name: Set Node.js 16.x
-        uses: actions/setup-node@v2.5.1
-        with:
-          node-version: 16.x
-
-#       - name: Install dependencies
-#         run: npm ci
-
-      - name: Rebuild the dist/ directory
-        run: |
-          npm i prettier
-          npm i @vercel/ncc
-          npm i -g prettier
-          npm i -g @vercel/ncc
-          npm i --save-dev @types/mime
-          npm i -g @types/mime
-          npm i -g mime
-          npm i --save-dev mime
-          npm install --verbose
-          npm run lint
-          npm run format
-          npm run build-ncc
-          ls -al ./
-      - name: List files in the repository
-        run: |
-          cat ./deployment.yaml
-          cat package.json
-      - name: Commit files
-        run: |
-          git add .
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git commit -m "Add changes" -a
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
-#          npm install -g typescript
-#           npm i --save-dev @types/node
+#           npm i prettier
+#           npm i @vercel/ncc
+#           npm i -g prettier
+#           npm i -g @vercel/ncc
+#           npm i --save-dev @types/mime
+#           npm i -g @types/mime
+#           npm i -g mime
+#           npm i --save-dev mime
 #           npm install --verbose
-#          tsc
-#           npm run test
-#           npm run package
+#           npm run lint
+#           npm run format
+#           npm run build-ncc
 #           ls -al ./
-#           ls -al dist/
-#       - name: Kubectl tool installer
-#         id: install-kubectl
-#         uses: Azure/setup-kubectl@v2.1
-#       - name: deploy to cci
-#         uses: ./
-#         id: cci
-#         with:
-#           access_key: ${{ secrets.ACCESSKEY }}
-#           secret_key: ${{ secrets.SECRETACCESSKEY }}
-#           region: cn-north-4
-#           manifest: './deployment.yaml'
-#           images: ${{ steps.build-image.outputs.image }}
 #       - name: List files in the repository
 #         run: |
-#           ls -al /usr/local/bin/
 #           cat ./deployment.yaml
-#           cci-iam-authenticator --help
+#           cat package.json
+#       - name: Commit files
+#         run: |
+#           git add .
+#           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+#           git config --local user.name "github-actions[bot]"
+#           git commit -m "Add changes" -a
+#       - name: Push changes
+#         uses: ad-m/github-push-action@master
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           branch: ${{ github.ref }}
+# #          npm install -g typescript
+# #           npm i --save-dev @types/node
+# #           npm install --verbose
+# #          tsc
+# #           npm run test
+# #           npm run package
+# #           ls -al ./
+# #           ls -al dist/
+# #       - name: Kubectl tool installer
+# #         id: install-kubectl
+# #         uses: Azure/setup-kubectl@v2.1
+# #       - name: deploy to cci
+# #         uses: ./
+# #         id: cci
+# #         with:
+# #           access_key: ${{ secrets.ACCESSKEY }}
+# #           secret_key: ${{ secrets.SECRETACCESSKEY }}
+# #           region: cn-north-4
+# #           manifest: './deployment.yaml'
+# #           images: ${{ steps.build-image.outputs.image }}
+# #       - name: List files in the repository
+# #         run: |
+# #           ls -al /usr/local/bin/
+# #           cat ./deployment.yaml
+# #           cci-iam-authenticator --help
