@@ -1,5 +1,8 @@
 name: Deploy CCI Actions Demo
-on: [push]
+on:
+  push:
+    branches:
+      - master1
       
 env:
   REGION_ID: cn-north-4                  # set this to your preferred huaweicloud region, e.g. cn-north-4
